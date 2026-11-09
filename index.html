@@ -166,19 +166,19 @@
             font-size: 0.85rem;
             cursor: pointer;
             white-space: nowrap;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
         }
 
-        .tab-btn.active, .tab-btn:hover {
-            background: var(--surface-hover);
-            color: var(--text);
+        .tab-btn:hover {
             border-color: var(--primary);
+            color: var(--text);
         }
 
         .tab-btn.active {
-            background: rgba(56, 189, 248, 0.15);
-            color: var(--primary);
+            background: var(--primary);
+            color: #04111d;
             font-weight: 600;
+            border-color: var(--primary);
         }
 
         /* Question Card */
@@ -188,8 +188,7 @@
             border-radius: var(--radius);
             padding: 24px;
             margin-bottom: 24px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
 
         .card-header {
@@ -200,27 +199,26 @@
         }
 
         .badge {
-            background: rgba(129, 140, 248, 0.2);
-            color: var(--accent);
-            border: 1px solid rgba(129, 140, 248, 0.4);
+            display: inline-block;
             padding: 4px 10px;
-            border-radius: 999px;
+            border-radius: 6px;
             font-size: 0.75rem;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--primary);
+            border: 1px solid rgba(56, 189, 248, 0.3);
         }
 
         .points-badge {
-            background: rgba(52, 211, 153, 0.15);
-            color: var(--success);
-            border: 1px solid rgba(52, 211, 153, 0.3);
-            padding: 4px 10px;
-            border-radius: 999px;
-            font-size: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--warning);
             font-weight: 600;
         }
 
         .question-title {
-            font-size: 1.15rem;
+            font-size: 1.25rem;
             font-weight: 600;
             margin-bottom: 12px;
             color: var(--text);
@@ -229,31 +227,53 @@
         .question-scenario {
             background: rgba(15, 23, 42, 0.6);
             border-left: 3px solid var(--primary);
-            padding: 12px 16px;
-            border-radius: 0 var(--radius) var(--radius) 0;
+            padding: 14px 16px;
+            border-radius: 0 8px 8px 0;
             margin-bottom: 20px;
             font-size: 0.95rem;
             color: #cbd5e1;
         }
 
+        .scenario-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 8px 0;
+            font-size: 0.85rem;
+        }
+
+        .scenario-table th, .scenario-table td {
+            border: 1px solid var(--border);
+            padding: 6px 10px;
+            text-align: left;
+        }
+
+        .scenario-table th {
+            background: rgba(15, 23, 42, 0.9);
+            color: var(--primary);
+        }
+
+        .scenario-table tr:hover {
+            background: rgba(56, 189, 248, 0.08);
+        }
+
+        /* Options List */
         .options-list {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            margin-bottom: 20px;
         }
 
         .option-item {
-            background: rgba(15, 23, 42, 0.5);
+            background: #151f30;
             border: 1px solid var(--border);
-            padding: 14px 18px;
-            border-radius: var(--radius);
+            border-radius: 8px;
+            padding: 14px 16px;
             cursor: pointer;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 12px;
-            font-size: 0.95rem;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
+            user-select: none;
         }
 
         .option-item:hover {
@@ -261,29 +281,30 @@
             border-color: var(--primary);
         }
 
-        .option-marker {
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
-            border: 2px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: bold;
-            color: var(--text-muted);
-            flex-shrink: 0;
-        }
-
         .option-item.selected {
             border-color: var(--primary);
             background: rgba(56, 189, 248, 0.1);
         }
 
+        .option-marker {
+            min-width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: var(--text-muted);
+            margin-top: 1px;
+        }
+
         .option-item.correct {
             border-color: var(--success) !important;
             background: rgba(52, 211, 153, 0.15) !important;
-            color: #a7f3d0;
+            color: #d1fae5;
         }
 
         .option-item.correct .option-marker {
@@ -506,8 +527,8 @@
         <button class="tab-btn" data-cat="ipv4">IPv4 & VLSM</button>
         <button class="tab-btn" data-cat="ipv6">IPv6 RFC 5952</button>
         <button class="tab-btn" data-cat="routing">Routing & DORA</button>
-        <button class="tab-btn" data-cat="ports">Ports & OUI</button>
-        <button class="tab-btn" data-cat="hardware">Hardware & QoS</button>
+        <button class="tab-btn" data-cat="ports">Ports & DNS</button>
+        <button class="tab-btn" data-cat="hardware">Hardware & Sicherheit</button>
         <button class="tab-btn" data-cat="kunden">Kundenanforderungen</button>
     </div>
 
@@ -533,7 +554,7 @@
             </tr>
             <tr><td>/24</td><td>255.255.255.0</td><td>256</td><td>254</td><td>Standard-LAN</td></tr>
             <tr><td>/25</td><td>255.255.255.128</td><td>128</td><td>126</td><td>2 große Netze</td></tr>
-            <tr><td>/26</td><td>255.255.255.192</td><td>64</td><td>62</td><td>4 Abteilungen</td></tr>
+            <tr><td>/26</td><td>255.255.255.192</td><td>64</td><td>62</td><td>4 Abteilungen (Vertrieb mit 50 Hosts)</td></tr>
             <tr><td>/27</td><td>255.255.255.224</td><td>32</td><td>30</td><td>Applied Business Strategies (Entwicklung/Marketing)</td></tr>
             <tr><td>/28</td><td>255.255.255.240</td><td>16</td><td>14</td><td>IT-Support / DMZ</td></tr>
             <tr><td>/29</td><td>255.255.255.248</td><td>8</td><td>6</td><td>Server-Cluster</td></tr>
@@ -549,17 +570,25 @@
             <li><strong>Scopes:</strong> <code>fe80::/10</code> = Link-Local | <code>fc00::/7</code> = ULA (Privat) | <code>2000::/3</code> = Global Unicast | <code>ff00::/8</code> = Multicast | <code>::1/128</code> = Loopback.</li>
         </ul>
 
-        <h3 style="color: var(--accent); margin-top: 20px;">3. Wichtige Standardports & Sicherheit</h3>
+        <h3 style="color: var(--accent); margin-top: 20px;">3. Wichtige Standardports & DNS-Recordtypen</h3>
         <table>
-            <tr><th>Dienst</th><th>Port</th><th>Verschlüsselt</th><th>Besonderheit</th></tr>
+            <tr><th>Dienst / Record</th><th>Port / Typ</th><th>Verschlüsselt</th><th>Funktion / Besonderheit</th></tr>
             <tr><td>HTTP</td><td>80 (TCP)</td><td>HTTPS: 443</td><td>Webverkehr</td></tr>
-            <tr><td>DNS</td><td>53 (UDP/TCP)</td><td>DoT: 853 / DoH: 443</td><td>DNSSEC = signiert; DoT = verschlüsselt</td></tr>
-            <tr><td>DHCP</td><td>67 (Srv) / 68 (Cli)</td><td>-</td><td>DORA-Vorgang (Broadcast &rarr; Unicast)</td></tr>
-            <tr><td>SMTP</td><td>25 (TCP)</td><td>465 (SMTPS) / 587</td><td>Mailversand</td></tr>
-            <tr><td>IMAP</td><td>143 (TCP)</td><td>993 (IMAPS)</td><td>Mailsynchronisation auf Server</td></tr>
-            <tr><td>POP3</td><td>110 (TCP)</td><td>995 (POP3S)</td><td>Mailabruf lokal</td></tr>
-            <tr><td>SSH</td><td>22 (TCP)</td><td>Nativ verschlüsselt</td><td>Remote Konsole</td></tr>
+            <tr><td>DNS A / AAAA</td><td>53 (UDP/TCP)</td><td>DoT: 853 / DoH: 443</td><td>A = IPv4 | AAAA = IPv6 | CNAME = Alias | MX = Mailserver | PTR = Reverse DNS</td></tr>
+            <tr><td>DHCP</td><td>67 (Srv) / 68 (Cli)</td><td>-</td><td>DORA: Discover (BC) &rarr; Offer (UC/BC) &rarr; Request (BC) &rarr; ACK (UC/BC)</td></tr>
+            <tr><td>SMTP</td><td>25 (TCP)</td><td>465 (SMTPS) / 587</td><td>Mailversand (Submission)</td></tr>
+            <tr><td>IMAP</td><td>143 (TCP)</td><td>993 (IMAPS)</td><td>Mailsynchronisation direkt auf Mailserver</td></tr>
+            <tr><td>POP3</td><td>110 (TCP)</td><td>995 (POP3S)</td><td>Lokales Herunterladen von E-Mails</td></tr>
+            <tr><td>SSH</td><td>22 (TCP)</td><td>Nativ verschlüsselt</td><td>Sichere Remote-Administration (ersetzt unverschlüsseltes Telnet Port 23)</td></tr>
         </table>
+
+        <h3 style="color: var(--accent); margin-top: 20px;">4. VPN & Firewall (DMZ-Prinzip)</h3>
+        <ul style="font-size: 0.85rem; color: #cbd5e1; padding-left: 20px; line-height: 1.6;">
+            <li><strong>Site-to-Site VPN:</strong> Dauerhafte Verbindung zweier Standorte (Filialkopplung über Router/Firewall-Gateway). Transparent für Endgeräte.</li>
+            <li><strong>End-to-Site VPN (Roadwarrior):</strong> Mobiler Client verbindet sich von unterwegs/Home-Office über VPN-Software ins Firmen-Gateway.</li>
+            <li><strong>DMZ (Demilitarisierte Zone):</strong> Isolierte Pufferzone für öffentlich erreichbare Server (Web, Mail). Verhindert, dass ein gekaperter Server Zugriff auf das interne Firmennetz erhält (Regel: <code>Internet &rarr; DMZ erlaubt</code>, aber <code>DMZ &rarr; LAN streng verboten</code>).</li>
+            <li><strong>Stateful Packet Inspection (SPI):</strong> Firewall merkt sich den Verbindungsstatus in einer Zustandstabelle (State Table) und erlaubt nur eingehende Pakete, die zu einer aktiv angeforderten ausgehenden Verbindung gehören.</li>
+        </ul>
     </div>
 </div>
 
@@ -659,31 +688,43 @@ const QUESTIONS = [
         id: 7,
         cat: "routing",
         points: 5,
-        title: "7. Routing-Entscheidung: Longest Prefix Match",
-        scenario: "Ein Router hat zwei Routen in der Tabelle:\nRoute 1: 192.168.2.0/24 über Gateway 192.168.1.1\nRoute 2: 192.168.2.128/26 über Gateway 192.168.2.254\nWohin wird ein Paket an 192.168.2.140 geschickt?",
+        title: "7. Routing-Tabelle analysieren: Next-Hop & Longest Prefix Match",
+        scenario: `Ein Router empfängt ein Datenpaket mit der Ziel-IP <strong>192.168.2.140</strong>. In seiner Routing-Tabelle stehen folgende Einträge:
+<table class="scenario-table">
+  <thead>
+    <tr><th>Zielnetz</th><th>Subnetzmaske</th><th>Next-Hop / Gateway</th><th>Schnittstelle</th><th>Metrik</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>192.168.1.0</td><td>255.255.255.0 (/24)</td><td>on-link (direkt)</td><td>eth0</td><td>0</td></tr>
+    <tr><td>192.168.2.0</td><td>255.255.255.0 (/24)</td><td>192.168.1.254</td><td>eth0</td><td>10</td></tr>
+    <tr><td>192.168.2.128</td><td>255.255.255.192 (/26)</td><td>192.168.1.253</td><td>eth0</td><td>5</td></tr>
+    <tr><td>0.0.0.0</td><td>0.0.0.0 (/0)</td><td>192.168.1.1</td><td>eth0</td><td>1</td></tr>
+  </tbody>
+</table>
+Über welches Gateway wird das Paket weitergeleitet und warum?`,
         options: [
-            { text: "Über Route 1, da sie die kleinere Metrik hat.", correct: false },
-            { text: "Über Route 2, weil die Subnetzmaske (/26) länger und spezifischer ist (Longest Prefix Match).", correct: true },
-            { text: "Verworfen, da ein IP-Konflikt in der Routing-Tabelle vorliegt.", correct: false },
-            { text: "Abwechselnd über beide Routen per Load Balancing.", correct: false }
+            { text: "Über 192.168.1.1, weil die Default-Route die niedrigste Metrik (1) besitzt.", correct: false },
+            { text: "Über 192.168.1.253, da das Subnetz /26 die längste und spezifischste Übereinstimmung bietet (Longest Prefix Match).", correct: true },
+            { text: "Über 192.168.1.254, weil es das gesamte Klasse-C-Netz /24 abdeckt.", correct: false },
+            { text: "Das Paket wird verworfen (Drop), weil die Ziel-IP in zwei Routen gleichzeitig enthalten ist.", correct: false }
         ],
-        explanation: "192.168.2.140 passt mathematisch in beide Bereiche (0-255 und 128-191). Beim Routing gilt das Gesetz des 'Longest Prefix Match': Die Route mit der längsten Präfixlänge (/26 = 26 Bits Einsen) gewinnt immer vor der kürzeren Route (/24 = 24 Bits Einsen).",
-        rechenweg: "Präfixvergleich: /26 > /24. Spezifischere Route gewinnt immer!"
+        explanation: "Die Ziel-IP 192.168.2.140 liegt sowohl in 192.168.2.0/24 (.0 bis .255) als auch in 192.168.2.128/26 (.128 bis .191). Beim Routing gilt strikt das Gesetz des 'Longest Prefix Match': Die Route mit der längsten Präfixlänge (/26 = 26 Bits Einsen) gewinnt immer vor der kürzeren Route (/24), völlig unabhängig von der Metrik! Die Default-Route (0.0.0.0/0) greift nur dann, wenn keine spezifischere Route existiert.",
+        rechenweg: "Präfixvergleich: /26 (26 Bits) > /24 (24 Bits) > /0 (0 Bits). Längste Maske gewinnt => Next-Hop ist 192.168.1.253!"
     },
     {
         id: 8,
         cat: "routing",
         points: 5,
-        title: "8. Das Rechnerstart-Szenario (meineABS ab1)",
-        scenario: "Ein PC wird eingeschaltet und der Nutzer öffnet eine Website. Welche Protokoll-Reihenfolge ist chronologisch absolut korrekt?",
+        title: "8. Das Rechnerstart-Szenario & DNS-Auflösung (meineABS ab1)",
+        scenario: "Ein PC wird eingeschaltet und der Nutzer öffnet im Browser 'https://portal.service.de'. Welche Protokoll-Reihenfolge ist chronologisch absolut korrekt?",
         options: [
             { text: "DNS -> DHCP -> TCP-Handshake -> ARP -> HTTP", correct: false },
-            { text: "DHCP (DORA) -> ARP (Default Gateway) -> DNS (Query) -> TCP (SYN/ACK) -> TLS/HTTPS", correct: true },
+            { text: "DHCP (DORA) -> ARP (Default Gateway) -> DNS (Query Port 53) -> TCP (SYN/ACK) -> TLS/HTTPS (Port 443)", correct: true },
             { text: "TCP-Handshake -> DNS -> DHCP -> HTTP -> TLS", correct: false },
             { text: "ARP -> DNS -> DHCP -> TLS -> HTTP", correct: false }
         ],
-        explanation: "1. PC hat keine IP => holt sich per DHCP DORA eine IP + Gateway + DNS.\n2. PC muss den Router ansprechen => fragt per ARP nach der MAC des Gateways.\n3. PC muss Domainnamen auflösen => sendet DNS-Anfrage an Port 53 UDP.\n4. PC kennt Ziel-IP => baut per TCP 3-Way Handshake Verbindung auf.\n5. TLS-Handshake zur Verschlüsselung und HTTP-GET-Datenübertragung.",
-        rechenweg: "Kette: Link-Up -> DHCP DORA -> ARP Gateway -> DNS Port 53 -> TCP Port 443 -> TLS -> HTTP GET."
+        explanation: "1. PC hat keine IP => holt sich per DHCP DORA eine IP + Gateway + DNS-Server-IP.\n2. PC muss den Router ansprechen => fragt per ARP nach der MAC-Adresse des Default Gateways.\n3. PC muss den Domainnamen auflösen => sendet DNS-Query an Port 53 UDP.\n4. PC kennt Ziel-IP => baut per TCP 3-Way Handshake (Port 443) die Transportverbindung auf.\n5. TLS-Handshake zur Verschlüsselung und HTTP-GET-Datenübertragung.",
+        rechenweg: "Kette: Link-Up -> DHCP DORA -> ARP Gateway -> DNS Port 53 UDP -> TCP Port 443 -> TLS -> HTTP GET."
     },
     {
         id: 9,
@@ -717,33 +758,33 @@ const QUESTIONS = [
     },
     {
         id: 11,
-        cat: "ports",
+        cat: "hardware",
         points: 5,
-        title: "11. MAC-Adresse & OUI-Vendor-Analyse (meineABS ab2)",
-        scenario: "Ein Administrator untersucht die MAC-Adresse F4:0F:24:AB:12:CD. Welche Aussage über den Aufbau ist technisch korrekt?",
+        title: "11. VPN-Architektur: Site-to-Site vs. End-to-Site (Roadwarrior)",
+        scenario: "Ein Unternehmen mit Hauptsitz in Frankfurt plant zwei Vernetzungsszenarien:\n1. Die Filiale in Berlin soll dauerhaft und für alle dortigen Arbeitsplätze transparent an das Firmennetz angebunden werden.\n2. Mitarbeiter im Außendienst und Home-Office sollen von unterwegs mit ihren Notebooks sicher auf interne Firmenserver zugreifen.\nWelche beiden VPN-Typen müssen für diese Anforderungen fachgerecht eingesetzt werden?",
         options: [
-            { text: "Die gesamte 48-Bit-Adresse wird vom Router dynamisch per DHCP vergeben.", correct: false },
-            { text: "Die ersten 24 Bit (3 Oktette) bilden die OUI zur Identifikation des Hardware-Herstellers (Vendor).", correct: true },
-            { text: "Die letzten 24 Bit identifizieren den IP-Subnetzbereich.", correct: false },
-            { text: "Die ersten 16 Bit geben das Transportprotokoll an.", correct: false }
+            { text: "1. End-to-End-VPN | 2. VLAN-Trunking (802.1Q)", correct: false },
+            { text: "1. Site-to-Site-VPN (Gateway-to-Gateway) | 2. End-to-Site-VPN (Client-to-Gateway / Roadwarrior)", correct: true },
+            { text: "1. Remote-Desktop-Gateway (RDP) | 2. Multi-SSID Access Point", correct: false },
+            { text: "1. Proxy-Server | 2. Dynamic NAT (PAT)", correct: false }
         ],
-        explanation: "Eine MAC-Adresse hat 48 Bit (6 Oktette). Die ersten 24 Bit bilden den OUI (Organizationally Unique Identifier), der vom IEEE fest an Hersteller (z. B. Apple, Cisco, Intel) vergeben wird. Die letzten 24 Bit sind die individuelle Seriennummer der Netzwerkkarte.",
-        rechenweg: "Aufbau: 24 Bit OUI (Hersteller) + 24 Bit NIC-Seriennummer = 48 Bit."
+        explanation: "1. Site-to-Site (Gateway-to-Gateway): Verbindet zwei lokale Netzwerke dauerhaft über einen verschlüsselten Tunnel (z. B. IPsec) zwischen den Gateways beider Standorte. Für die Endgeräte ist dies vollkommen transparent.\n2. End-to-Site (Client-to-Gateway / Roadwarrior): Ermöglicht mobilen Endgeräten über eine installierte VPN-Client-Software (z. B. WireGuard, OpenVPN) den sicheren Tunnelaufbau von extern ins Firmennetzwerk.",
+        rechenweg: "Site-to-Site = Standortkopplung (Router-an-Router) | End-to-Site = Home-Office / Außendienst (Client-an-Router)."
     },
     {
         id: 12,
         cat: "hardware",
         points: 5,
-        title: "12. QoS Parameter-Falle (meineABS ab4)",
-        scenario: "Welche Parameter können durch den Einsatz von Quality of Service (QoS) nachweislich im Netzwerk verbessert werden?",
+        title: "12. Firewall-Sicherheitszonen: Das DMZ-Prinzip (Demilitarisierte Zone)",
+        scenario: "Ein Unternehmen betreibt einen Webshop, der aus dem Internet erreichbar sein muss, sowie interne Datenbankserver mit Kundendaten. Warum darf der Webserver nach BSI-Grundschutz NIEMALS direkt im internen Firmen-LAN platziert werden, und wie schützt eine DMZ das Netzwerk?",
         options: [
-            { text: "Brutto-Übertragungsrate, MTU-Paketgröße und Hop-Count", correct: false },
-            { text: "Latenzzeit, Jitter (Laufzeitschwankung) und Paketverlustrate", correct: true },
-            { text: "Reduktion der physischen Kabellänge und Erhöhung der CPU-Taktung", correct: false },
-            { text: "Verschlüsselungsstärke und BSI-Zertifizierung", correct: false }
+            { text: "Weil Webserver auf Port 80/443 keine privaten RFC-1918-IP-Adressen verwenden können.", correct: false },
+            { text: "Weil bei einer Kompromittierung des Webservers aus dem Internet das gesamte interne Firmen-LAN offenläge; eine DMZ isoliert öffentlich erreichbare Dienste zwischen zwei Firewalls bzw. Schnittstellen.", correct: true },
+            { text: "Weil eine Firewall Datenpakete nur filtern kann, wenn sie zwischen unterschiedlichen autonomen Systemen (BGP) geroutet werden.", correct: false },
+            { text: "Um die Bandbreite des internen Switches vor dem HTTP-Verkehr zu schützen.", correct: false }
         ],
-        explanation: "QoS priorisiert Datenpakete in Puffern (Queues). Dadurch sinken für bevorzugten Datenverkehr (z. B. VoIP) die Latenzzeit, der Jitter (Laufzeitschwankung) und die Paketverlustrate. Die Brutto-Bandbreite der Leitung oder die maximale Paketgröße (MTU) können durch QoS NICHT vergrößert werden!",
-        rechenweg: "QoS verbessert: 1. Latenz | 2. Jitter | 3. Paketverlust. (NICHT Bandbreite!)."
+        explanation: "Dienste, die aus dem ungesicherten Internet erreichbar sind (Webserver, Mailserver), haben die höchste Angriffswahrscheinlichkeit. Stünde der Server im internen LAN, hätte ein Angreifer nach einer Kompromittierung sofort Zugriff auf interne Clients und Datenbanken. In einer DMZ (Demilitarisierte Zone) ist der Server isoliert: Das Internet darf auf die DMZ zugreifen, aber Zugriffe aus der DMZ in das interne Firmen-LAN sind durch die Firewall standardmäßig strikt verboten!",
+        rechenweg: "Sicherheitsregel: Internet -> DMZ (erlaubt) | DMZ -> Internes Firmen-LAN (STRENG VERBOTEN!)."
     },
     {
         id: 13,
@@ -764,7 +805,7 @@ const QUESTIONS = [
         id: 14,
         cat: "hardware",
         points: 5,
-        title: "14. Kollisions- vs. Broadcastdomänen zählen",
+        title: "14. Kollisions- vs. Broadcastdomänen zählen (Switch vs. Router)",
         scenario: "Ein Netzwerk besteht aus: 1 Router mit 2 aktiven Schnittstellen. An Schnittstelle 1 hängt ein Managed Switch mit 12 PCs. An Schnittstelle 2 hängt ein alter Hub mit 6 PCs. Wie viele Kollisions- und Broadcastdomänen existieren?",
         options: [
             { text: "18 Kollisionsdomänen und 18 Broadcastdomänen", correct: false },
@@ -772,7 +813,7 @@ const QUESTIONS = [
             { text: "2 Kollisionsdomänen und 14 Broadcastdomänen", correct: false },
             { text: "13 Kollisionsdomänen und 1 Broadcastdomäne", correct: false }
         ],
-        explanation: "1. Kollisionsdomänen: Jeder Switch-Port bildet eine eigene Domäne (12 PCs + 1 Uplink zum Router = 13). Der Hub bildet über ALLE seine Ports genau 1 gemeinsame Domäne (6 PCs + 1 Uplink = 1). Gesamt: 13 + 1 = 14.\n2. Broadcastdomänen: Router trennen Broadcasts. Bei 2 getrennten Router-Schnittstellen gibt es genau 2 Broadcastdomänen.",
+        explanation: "1. Kollisionsdomänen: Jeder Switch-Port bildet eine eigene Domäne (12 PCs + 1 Uplink zum Router = 13). Der Hub bildet über ALLE seine Ports genau 1 gemeinsame Domäne (6 PCs + 1 Uplink = 1). Gesamt: 13 + 1 = 14.\n2. Broadcastdomänen: Router trennen Broadcasts auf Layer 3. Bei 2 getrennten Router-Schnittstellen gibt es genau 2 Broadcastdomänen.",
         rechenweg: "Kollision: Switch (12+1=13) + Hub (1) = 14. Broadcast: 2 Router-Ports = 2."
     },
     {
@@ -828,8 +869,8 @@ function renderQuestion() {
                 <div class="explanation-title ${isCorrect ? 'success' : 'error'}">
                     ${isCorrect ? '✅ Richtig! Volle ' + q.points + ' Punkte.' : '❌ Leider falsch! 0 von ' + q.points + ' Punkten.'}
                 </div>
-                <div class="explanation-body">${q.explanation}</div>
-                <div class="rechenweg"><strong>Süßmann-Rechenweg:</strong><br>${q.rechenweg}</div>
+                <div class="explanation-body">${q.explanation.replace(/\n/g, '<br>')}</div>
+                <div class="rechenweg"><strong>Süßmann-Rechenweg & Merksatz:</strong><br>${q.rechenweg}</div>
             </div>
         `;
     }
@@ -938,7 +979,7 @@ function renderSummary() {
             </div>
             <h3 style="color: ${gradeColor}; margin-bottom: 12px;">${gradeText}</h3>
             <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto 24px auto;">
-                Du hast ${pct}% der erreichbaren Punkte erzielt. Alle 15 Prüfungsaufgaben entsprechen der exakten Fragestellung von Lehrer Süßmann und den meineABS-Arbeitsblättern.
+                Du hast ${pct}% der erreichbaren Punkte erzielt. Alle 15 Prüfungsaufgaben decken exakt die geforderten Themengebiete ab (IPv4/IPv6, Routing-Tabelle, DHCP, Ports & DNS, VPN, Firewall/DMZ, Switch, AP, Kundenanforderungen).
             </p>
             <div style="display: flex; gap: 12px; justify-content: center;">
                 <button class="btn btn-primary" onclick="restartQuiz()">🔄 Quiz wiederholen</button>
@@ -953,8 +994,8 @@ function getCategoryName(cat) {
         case "ipv4": return "IPv4 & VLSM";
         case "ipv6": return "IPv6 RFC 5952";
         case "routing": return "Routing & Boot";
-        case "ports": return "Ports & OUI";
-        case "hardware": return "Hardware & QoS";
+        case "ports": return "Ports & DNS";
+        case "hardware": return "Hardware & Sicherheit";
         case "kunden": return "Kundenanforderungen";
         default: return "Allgemein";
     }
