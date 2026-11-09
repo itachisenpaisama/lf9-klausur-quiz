@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LF9 Klausur-Trainingslager – Interaktives Prüfungstraining</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: #1e293b;
+            --surface-hover: #334155;
+            --border: #475569;
+            --primary: #38bdf8;
+            --primary-hover: #0ea5e9;
+            --accent: #818cf8;
+            --success: #34d399;
+            --error: #f87171;
+            --warning: #fbbf24;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+
+        .title-group h1 {
+            font-size: 1.6rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .title-group p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background: var(--surface-hover);
+            border-color: var(--primary);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #04111d;
+            border-color: var(--primary);
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Stats & Progress Bar */
+        .stats-bar {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .stat-item .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .stat-item .val {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-top: 2px;
+        }
+
+        .progress-wrapper {
+            margin-bottom: 24px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--surface);
+            border-radius: 999px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Category Filter Tabs */
+        .category-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--surface-hover);
+            color: var(--text);
+            border-color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Question Card */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            position: relative;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .badge {
+            background: rgba(129, 140, 248, 0.2);
+            color: var(--accent);
+            border: 1px solid rgba(129, 140, 248, 0.4);
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .points-badge {
+            background: rgba(52, 211, 153, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .question-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text);
+        }
+
+        .question-scenario {
+            background: rgba(15, 23, 42, 0.6);
+            border-left: 3px solid var(--primary);
+            padding: 12px 16px;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            color: #cbd5e1;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .option-item {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--border);
+            padding: 14px 18px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .option-item:hover {
+            background: var(--surface-hover);
+            border-color: var(--primary);
+        }
+
+        .option-marker {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .option-item.selected {
+            border-color: var(--primary);
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        .option-item.correct {
+            border-color: var(--success) !important;
+            background: rgba(52, 211, 153, 0.15) !important;
+            color: #a7f3d0;
+        }
+
+        .option-item.correct .option-marker {
+            background: var(--success);
+            border-color: var(--success);
+            color: #064e3b;
+        }
+
+        .option-item.wrong {
+            border-color: var(--error) !important;
+            background: rgba(248, 113, 113, 0.15) !important;
+            color: #fecaca;
+        }
+
+        .option-item.wrong .option-marker {
+            background: var(--error);
+            border-color: var(--error);
+            color: #7f1d1d;
+        }
+
+        /* Explanation Box */
+        .explanation-box {
+            display: none;
+            background: #0b1322;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px;
+            margin-top: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .explanation-title {
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .explanation-title.success { color: var(--success); }
+        .explanation-title.error { color: var(--error); }
+
+        .explanation-body {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        .rechenweg {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px dashed var(--border);
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.85rem;
+            color: var(--primary);
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        /* Cheat Sheet Modal / Drawer */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 100;
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            max-width: 800px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+
+        .close-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .close-btn:hover { color: var(--text); }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 20px 0;
+            font-size: 0.85rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(15, 23, 42, 0.8);
+            color: var(--primary);
+        }
+
+        tr:nth-child(even) {
+            background: rgba(15, 23, 42, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .score-summary {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(56, 189, 248, 0.1);
+            border: 4px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+        }
+
+        .score-val {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .score-max {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="title-group">
+            <h1>🎓 LF9 Klausur-Trainingslager</h1>
+            <p>Originalgetreue Prüfungsfragen nach meineABS & Lehrer Süßmann</p>
+        </div>
+        <div class="header-actions">
+            <button class="btn" id="open-sheet-btn">📖 Spickzettel</button>
+            <button class="btn" id="reset-btn">🔄 Neu starten</button>
+        </div>
+    </header>
+
+    <!-- Stats & Progress -->
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="label">Fortschritt</div>
+            <div class="val" id="progress-text">1 / 15</div>
+        </div>
+        <div class="stat-item">
+            <div class="label">Punkte</div>
+            <div class="val" id="score-text">0 P.</div>
+        </div>
+        <div class="stat-item">
+            <div class="label">Genauigkeit</div>
+            <div class="val" id="accuracy-text">0%</div>
+        </div>
+        <div class="stat-item">
+            <div class="label">Klausurnote</div>
+            <div class="val" id="grade-text" style="color: var(--warning)">-</div>
+        </div>
+    </div>
+
+    <div class="progress-wrapper">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
+
+    <!-- Category Filter -->
+    <div class="category-tabs" id="category-tabs">
+        <button class="tab-btn active" data-cat="all">Alle Themen (15)</button>
+        <button class="tab-btn" data-cat="ipv4">IPv4 & VLSM</button>
+        <button class="tab-btn" data-cat="ipv6">IPv6 RFC 5952</button>
+        <button class="tab-btn" data-cat="routing">Routing & DORA</button>
+        <button class="tab-btn" data-cat="ports">Ports & OUI</button>
+        <button class="tab-btn" data-cat="hardware">Hardware & QoS</button>
+        <button class="tab-btn" data-cat="kunden">Kundenanforderungen</button>
+    </div>
+
+    <!-- Main Question Container -->
+    <div id="quiz-container">
+        <!-- Injected via JS -->
+    </div>
+</div>
+
+<!-- Modal: Klausur-Spickzettel & Formelsammlung -->
+<div class="modal-overlay" id="sheet-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 style="color: var(--primary);">📋 Klausur-Spickzettel: LF9 Vernetzte IT-Systeme</h2>
+            <button class="close-btn" id="close-sheet-btn">&times;</button>
+        </div>
+
+        <h3 style="color: var(--accent); margin-top: 10px;">1. IPv4 5-Sekunden-Inkrement-Tabelle</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Formel: Inkrement = 256 - Maskenwert | Nutzbare Hosts = 2^h - 2</p>
+        <table>
+            <tr>
+                <th>CIDR</th><th>Subnetzmaske</th><th>Inkrement</th><th>Nutzbare Hosts</th><th>Typischer Einsatz</th>
+            </tr>
+            <tr><td>/24</td><td>255.255.255.0</td><td>256</td><td>254</td><td>Standard-LAN</td></tr>
+            <tr><td>/25</td><td>255.255.255.128</td><td>128</td><td>126</td><td>2 große Netze</td></tr>
+            <tr><td>/26</td><td>255.255.255.192</td><td>64</td><td>62</td><td>4 Abteilungen</td></tr>
+            <tr><td>/27</td><td>255.255.255.224</td><td>32</td><td>30</td><td>Applied Business Strategies (Entwicklung/Marketing)</td></tr>
+            <tr><td>/28</td><td>255.255.255.240</td><td>16</td><td>14</td><td>IT-Support / DMZ</td></tr>
+            <tr><td>/29</td><td>255.255.255.248</td><td>8</td><td>6</td><td>Server-Cluster</td></tr>
+            <tr><td>/30</td><td>255.255.255.252</td><td>4</td><td>2</td><td>Router-Punkt-zu-Punkt-Link</td></tr>
+        </table>
+
+        <h3 style="color: var(--accent); margin-top: 20px;">2. IPv6 RFC 5952 Verkürzungsregeln</h3>
+        <ul style="font-size: 0.85rem; color: #cbd5e1; padding-left: 20px; line-height: 1.6;">
+            <li><strong>Führende Nullen:</strong> In jedem Block streichen (z.B. <code>0db8</code> &rarr; <code>db8</code>, <code>0000</code> &rarr; <code>0</code>).</li>
+            <li><strong>Doppel-Doppelpunkt <code>::</code>:</strong> Nur 1x in der gesamten Adresse für 2 oder mehr aufeinanderfolgende 0-Blöcke.</li>
+            <li><strong>Längste Folge:</strong> <code>::</code> wird immer auf die längste Nullfolge angewendet.</li>
+            <li><strong style="color: var(--warning);">Gleichstand-Regel (Links vor Rechts):</strong> Sind zwei Null-Folgen exakt gleich lang, MUSS die ERSTE (linke) Folge verkürzt werden! (z.B. <code>2001::1:0:0:2</code>).</li>
+            <li><strong>Scopes:</strong> <code>fe80::/10</code> = Link-Local | <code>fc00::/7</code> = ULA (Privat) | <code>2000::/3</code> = Global Unicast | <code>ff00::/8</code> = Multicast | <code>::1/128</code> = Loopback.</li>
+        </ul>
+
+        <h3 style="color: var(--accent); margin-top: 20px;">3. Wichtige Standardports & Sicherheit</h3>
+        <table>
+            <tr><th>Dienst</th><th>Port</th><th>Verschlüsselt</th><th>Besonderheit</th></tr>
+            <tr><td>HTTP</td><td>80 (TCP)</td><td>HTTPS: 443</td><td>Webverkehr</td></tr>
+            <tr><td>DNS</td><td>53 (UDP/TCP)</td><td>DoT: 853 / DoH: 443</td><td>DNSSEC = signiert; DoT = verschlüsselt</td></tr>
+            <tr><td>DHCP</td><td>67 (Srv) / 68 (Cli)</td><td>-</td><td>DORA-Vorgang (Broadcast &rarr; Unicast)</td></tr>
+            <tr><td>SMTP</td><td>25 (TCP)</td><td>465 (SMTPS) / 587</td><td>Mailversand</td></tr>
+            <tr><td>IMAP</td><td>143 (TCP)</td><td>993 (IMAPS)</td><td>Mailsynchronisation auf Server</td></tr>
+            <tr><td>POP3</td><td>110 (TCP)</td><td>995 (POP3S)</td><td>Mailabruf lokal</td></tr>
+            <tr><td>SSH</td><td>22 (TCP)</td><td>Nativ verschlüsselt</td><td>Remote Konsole</td></tr>
+        </table>
+    </div>
+</div>
+
+<script>
+const QUESTIONS = [
+    {
+        id: 1,
+        cat: "ipv4",
+        points: 5,
+        title: "1. IPv4 Subnetting – Applied Business Strategies Szenario (meineABS ab1)",
+        scenario: "Das Beratungsunternehmen plant das Subnetz für die Abteilung 'Vertrieb' mit 50 Mitarbeitern ausgehend vom Basisnetz 192.168.10.0/24. Welches CIDR-Präfix und welche Subnetzmaske müssen nach den Regeln des VLSM gewählt werden?",
+        options: [
+            { text: "/25 (255.255.255.128) – Blockgröße 128", correct: false },
+            { text: "/26 (255.255.255.192) – Blockgröße 64 für 62 nutzbare Hosts", correct: true },
+            { text: "/27 (255.255.255.224) – Blockgröße 32 für 30 nutzbare Hosts", correct: false },
+            { text: "/28 (255.255.255.240) – Blockgröße 16 für 14 nutzbare Hosts", correct: false }
+        ],
+        explanation: "Für 50 Hosts benötigt man mindestens 52 Adressen (50 Hosts + 1 Netz-ID + 1 Broadcast). Die kleinste passende Zweierpotenz ist 2^6 = 64 (6 Hostbits). 32 Bit - 6 Hostbits = /26 (Subnetzmaske 255.255.255.192). Es können 64 - 2 = 62 Hosts adressiert werden.",
+        rechenweg: "2^h - 2 >= 50 => h = 6 (2^6 - 2 = 62 Hosts). Maske: 32 - 6 = /26 (255.255.255.192)."
+    },
+    {
+        id: 2,
+        cat: "ipv4",
+        points: 5,
+        title: "2. Konkrete Subnetzberechnung mit Inkrement",
+        scenario: "Ein Administrator liest auf einem Switch-Port die IP-Adresse 172.20.45.138/27 ab. Welche Broadcast-Adresse gehört zu diesem Subnetz?",
+        options: [
+            { text: "172.20.45.255", correct: false },
+            { text: "172.20.45.160", correct: false },
+            { text: "172.20.45.159", correct: true },
+            { text: "172.20.45.143", correct: false }
+        ],
+        explanation: "/27 entspricht Maske 255.255.255.224. Das Inkrement im 4. Oktett ist 256 - 224 = 32. Die Subnetz-Grenzen sind 0, 32, 64, 96, 128, 160. Die Zahl 138 liegt im Bereich von 128 bis 159. Die Netz-ID ist 172.20.45.128, die Broadcast-Adresse ist immer die letzte Adresse des Blocks: 172.20.45.159.",
+        rechenweg: "Inkrement = 256 - 224 = 32. Net-ID: 128 (4 * 32). Broadcast: 128 + 32 - 1 = 159."
+    },
+    {
+        id: 3,
+        cat: "ipv4",
+        points: 5,
+        title: "3. Adressbereiche nach RFC 1918 & Sondernetze",
+        scenario: "Welche der folgenden IP-Adressen ist KEINE private IPv4-Adresse nach RFC 1918?",
+        options: [
+            { text: "10.200.45.1", correct: false },
+            { text: "172.28.100.4", correct: false },
+            { text: "172.33.1.50", correct: true },
+            { text: "192.168.178.1", correct: false }
+        ],
+        explanation: "Der private Klasse-B-Bereich nach RFC 1918 reicht exakt von 172.16.0.0 bis 172.31.255.255. Die Adresse 172.33.1.50 liegt oberhalb von 172.31 und ist daher eine weltweite öffentliche IP-Adresse!",
+        rechenweg: "RFC 1918 Klasse B: 172.16.0.0/12 (172.16.0.0 bis 172.31.255.255). 172.33 liegt außerhalb!"
+    },
+    {
+        id: 4,
+        cat: "ipv6",
+        points: 5,
+        title: "4. IPv6-Verkürzung nach RFC 5952 – Die Gleichstand-Prüfungsfalle",
+        scenario: "Kürzen Sie die folgende IPv6-Adresse streng nach RFC 5952:\n2001:0000:0000:0001:0000:0000:0002:0003",
+        options: [
+            { text: "2001::1::2:3", correct: false },
+            { text: "2001:0:0:1::2:3", correct: false },
+            { text: "2001::1:0:0:2:3", correct: true },
+            { text: "2001:0000::1::2:3", correct: false }
+        ],
+        explanation: "1. '::' darf nur EINMAL vorkommen (Option A und D scheiden sofort aus).\n2. Beide Nullerfolgen sind exakt 2 Blöcke lang (Gleichstand!). Nach RFC 5952 §4.2.3 MUSS bei Gleichstand immer die ERSTE (linke) Folge gekürzt werden! Daher wird die erste Folge zu '::', während die zweite als ':0:0:' ausgeschrieben bleibt.",
+        rechenweg: "Regel Gleichstand: Links vor Rechts! 2001:[0000:0000]:0001:[0000:0000]:0002:0003 => 2001::1:0:0:2:3."
+    },
+    {
+        id: 5,
+        cat: "ipv6",
+        points: 5,
+        title: "5. IPv6-Rückwärtsverkürzung (Ausschreiben auf 128 Bit)",
+        scenario: "Schreiben Sie die verkürzte Adresse 'fe80::7e0:4302:0:a26' vollständig auf alle 8 Blöcke aus.",
+        options: [
+            { text: "fe80:0000:0000:07e0:4302:0000:0a26:0000", correct: false },
+            { text: "fe80:0000:0000:0000:07e0:4302:0000:0a26", correct: true },
+            { text: "fe80:0000:0000:0000:7e00:4302:0000:a260", correct: false },
+            { text: "fe80:0000:0000:07e0:4302:0000:0000:0a26", correct: false }
+        ],
+        explanation: "Zähle die sichtbaren Blöcke: 'fe80' (1), '7e0' (2), '4302' (3), '0' (4), 'a26' (5). Es sind 5 Blöcke vorhanden. Eine IPv6-Adresse hat genau 8 Blöcke. Es fehlen 8 - 5 = 3 Nullblöcke. '::' wird durch 3 Blöcke '0000:0000:0000' ersetzt. Danach werden alle Blöcke links mit führenden Nullen auf 4 Stellen aufgefüllt: '07e0' und '0a26'.",
+        rechenweg: "Vorhanden: 5 Blöcke. Fehlend: 8 - 5 = 3 Blöcke. fe80:0000:0000:0000:07e0:4302:0000:0a26."
+    },
+    {
+        id: 6,
+        cat: "ipv6",
+        points: 5,
+        title: "6. IPv6-Subnetting (meineABS ab1 Aufgabe 5 & ab2)",
+        scenario: "Ein Provider weist dem Kunden den IPv6-Bereich 2001:db8:acad:3200::/58 zu. Der Kunde soll diesen Bereich in 8 gleich große Subnetze aufteilen. Welches neue CIDR-Präfix haben die Subnetze?",
+        options: [
+            { text: "/64 (Standard Host-Prefix)", correct: false },
+            { text: "/61", correct: true },
+            { text: "/60", correct: false },
+            { text: "/66", correct: false }
+        ],
+        explanation: "Für 8 Subnetze gilt: 2^n = 8 => n = 3 Bit müssen für das Subnetting geborgt werden. Neues Präfix: 58 + 3 = /61.",
+        rechenweg: "Formel: 2^n >= 8 => n = 3 Bits. Neues Präfix: 58 + 3 = /61."
+    },
+    {
+        id: 7,
+        cat: "routing",
+        points: 5,
+        title: "7. Routing-Entscheidung: Longest Prefix Match",
+        scenario: "Ein Router hat zwei Routen in der Tabelle:\nRoute 1: 192.168.2.0/24 über Gateway 192.168.1.1\nRoute 2: 192.168.2.128/26 über Gateway 192.168.2.254\nWohin wird ein Paket an 192.168.2.140 geschickt?",
+        options: [
+            { text: "Über Route 1, da sie die kleinere Metrik hat.", correct: false },
+            { text: "Über Route 2, weil die Subnetzmaske (/26) länger und spezifischer ist (Longest Prefix Match).", correct: true },
+            { text: "Verworfen, da ein IP-Konflikt in der Routing-Tabelle vorliegt.", correct: false },
+            { text: "Abwechselnd über beide Routen per Load Balancing.", correct: false }
+        ],
+        explanation: "192.168.2.140 passt mathematisch in beide Bereiche (0-255 und 128-191). Beim Routing gilt das Gesetz des 'Longest Prefix Match': Die Route mit der längsten Präfixlänge (/26 = 26 Bits Einsen) gewinnt immer vor der kürzeren Route (/24 = 24 Bits Einsen).",
+        rechenweg: "Präfixvergleich: /26 > /24. Spezifischere Route gewinnt immer!"
+    },
+    {
+        id: 8,
+        cat: "routing",
+        points: 5,
+        title: "8. Das Rechnerstart-Szenario (meineABS ab1)",
+        scenario: "Ein PC wird eingeschaltet und der Nutzer öffnet eine Website. Welche Protokoll-Reihenfolge ist chronologisch absolut korrekt?",
+        options: [
+            { text: "DNS -> DHCP -> TCP-Handshake -> ARP -> HTTP", correct: false },
+            { text: "DHCP (DORA) -> ARP (Default Gateway) -> DNS (Query) -> TCP (SYN/ACK) -> TLS/HTTPS", correct: true },
+            { text: "TCP-Handshake -> DNS -> DHCP -> HTTP -> TLS", correct: false },
+            { text: "ARP -> DNS -> DHCP -> TLS -> HTTP", correct: false }
+        ],
+        explanation: "1. PC hat keine IP => holt sich per DHCP DORA eine IP + Gateway + DNS.\n2. PC muss den Router ansprechen => fragt per ARP nach der MAC des Gateways.\n3. PC muss Domainnamen auflösen => sendet DNS-Anfrage an Port 53 UDP.\n4. PC kennt Ziel-IP => baut per TCP 3-Way Handshake Verbindung auf.\n5. TLS-Handshake zur Verschlüsselung und HTTP-GET-Datenübertragung.",
+        rechenweg: "Kette: Link-Up -> DHCP DORA -> ARP Gateway -> DNS Port 53 -> TCP Port 443 -> TLS -> HTTP GET."
+    },
+    {
+        id: 9,
+        cat: "routing",
+        points: 5,
+        title: "9. DHCP DORA & RFC 2132 Optionen",
+        scenario: "Warum sendet der DHCP-Client die dritte Nachricht (DHCPREQUEST) als Broadcast ins Netz, obwohl er vom Server bereits ein DHCPOFFER erhalten hat?",
+        options: [
+            { text: "Weil der Client immer noch keine eigene IP-Adresse besitzen darf.", correct: false },
+            { text: "Damit alle anderen DHCP-Server erfahren, dass ihr Angebot abgelehnt wurde und sie ihre reservierten IPs wieder freigeben.", correct: true },
+            { text: "Um den Default-Gateway-Router über die Annahme zu informieren.", correct: false },
+            { text: "Weil UDP auf Port 67 grundsätzlich keine Unicast-Pakete unterstützt.", correct: false }
+        ],
+        explanation: "Im Netzwerk können mehrere DHCP-Server existieren, die alle ein DHCPOFFER gesendet haben. Durch den Broadcast-DHCPREQUEST erfahren alle Server gleichzeitig, für welches Angebot sich der Client entschieden hat. Die abgelehnten Server geben ihre reservierten IPs sofort wieder in den Pool frei.",
+        rechenweg: "Broadcast-Zweck: Signalisierung an ALLE DHCP-Server zur Pool-Bereinigung."
+    },
+    {
+        id: 10,
+        cat: "ports",
+        points: 5,
+        title: "10. Mail-Ports & Transportverschlüsselung (meineABS ab1)",
+        scenario: "Ein Client soll E-Mails über IMAP und SMTP abrufen bzw. senden. Welche Port-Kombination ist für die verschlüsselten Standardvarianten (IMAPS und SMTPS) korrekt?",
+        options: [
+            { text: "IMAPS: Port 110 | SMTPS: Port 25", correct: false },
+            { text: "IMAPS: Port 143 | SMTPS: Port 587", correct: false },
+            { text: "IMAPS: Port 993 | SMTPS: Port 465 (bzw. 587 Submission)", correct: true },
+            { text: "IMAPS: Port 995 | SMTPS: Port 443", correct: false }
+        ],
+        explanation: "Standard IMAP = 143, verschlüsseltes IMAPS = 993. Standard SMTP = 25, verschlüsseltes SMTPS = 465 (oder Submission über Port 587 mit STARTTLS). POP3S liegt auf 995.",
+        rechenweg: "IMAPS = 993 (TCP) | SMTPS = 465 (TCP) | POP3S = 995 (TCP)."
+    },
+    {
+        id: 11,
+        cat: "ports",
+        points: 5,
+        title: "11. MAC-Adresse & OUI-Vendor-Analyse (meineABS ab2)",
+        scenario: "Ein Administrator untersucht die MAC-Adresse F4:0F:24:AB:12:CD. Welche Aussage über den Aufbau ist technisch korrekt?",
+        options: [
+            { text: "Die gesamte 48-Bit-Adresse wird vom Router dynamisch per DHCP vergeben.", correct: false },
+            { text: "Die ersten 24 Bit (3 Oktette) bilden die OUI zur Identifikation des Hardware-Herstellers (Vendor).", correct: true },
+            { text: "Die letzten 24 Bit identifizieren den IP-Subnetzbereich.", correct: false },
+            { text: "Die ersten 16 Bit geben das Transportprotokoll an.", correct: false }
+        ],
+        explanation: "Eine MAC-Adresse hat 48 Bit (6 Oktette). Die ersten 24 Bit bilden den OUI (Organizationally Unique Identifier), der vom IEEE fest an Hersteller (z. B. Apple, Cisco, Intel) vergeben wird. Die letzten 24 Bit sind die individuelle Seriennummer der Netzwerkkarte.",
+        rechenweg: "Aufbau: 24 Bit OUI (Hersteller) + 24 Bit NIC-Seriennummer = 48 Bit."
+    },
+    {
+        id: 12,
+        cat: "hardware",
+        points: 5,
+        title: "12. QoS Parameter-Falle (meineABS ab4)",
+        scenario: "Welche Parameter können durch den Einsatz von Quality of Service (QoS) nachweislich im Netzwerk verbessert werden?",
+        options: [
+            { text: "Brutto-Übertragungsrate, MTU-Paketgröße und Hop-Count", correct: false },
+            { text: "Latenzzeit, Jitter (Laufzeitschwankung) und Paketverlustrate", correct: true },
+            { text: "Reduktion der physischen Kabellänge und Erhöhung der CPU-Taktung", correct: false },
+            { text: "Verschlüsselungsstärke und BSI-Zertifizierung", correct: false }
+        ],
+        explanation: "QoS priorisiert Datenpakete in Puffern (Queues). Dadurch sinken für bevorzugten Datenverkehr (z. B. VoIP) die Latenzzeit, der Jitter (Laufzeitschwankung) und die Paketverlustrate. Die Brutto-Bandbreite der Leitung oder die maximale Paketgröße (MTU) können durch QoS NICHT vergrößert werden!",
+        rechenweg: "QoS verbessert: 1. Latenz | 2. Jitter | 3. Paketverlust. (NICHT Bandbreite!)."
+    },
+    {
+        id: 13,
+        cat: "hardware",
+        points: 5,
+        title: "13. Hardware-Beschaffung & Access Points (meineABS ab5)",
+        scenario: "Eine Firma möchte für Kunden ein getrenntes Gast-WLAN anbieten, ohne separate Antennen zu kaufen. Welches technische Feature ist für den Access Point zwingend erforderlich?",
+        options: [
+            { text: "PoE+ mit mindestens 480 Watt", correct: false },
+            { text: "Multi-SSID (MSSID) mit VLAN-Tagging (802.1Q)", correct: true },
+            { text: "PPPoE-Einwahlprotokoll", correct: false },
+            { text: "Lüfterlose Passivkühlung", correct: false }
+        ],
+        explanation: "Multi-SSID erlaubt es einem einzelnen Access Point, mehrere logische Funknetze (z. B. 'Firma-Intern' und 'Firma-Gast') auszustrahlen. In Verbindung mit VLANs (802.1Q) werden die Gast-Datenpakete bereits auf Layer 2 vollständig vom Firmennetzwerk isoliert.",
+        rechenweg: "Multi-SSID (MSSID) = Mehrere WLAN-Namen auf 1 AP, getrennt per VLAN."
+    },
+    {
+        id: 14,
+        cat: "hardware",
+        points: 5,
+        title: "14. Kollisions- vs. Broadcastdomänen zählen",
+        scenario: "Ein Netzwerk besteht aus: 1 Router mit 2 aktiven Schnittstellen. An Schnittstelle 1 hängt ein Managed Switch mit 12 PCs. An Schnittstelle 2 hängt ein alter Hub mit 6 PCs. Wie viele Kollisions- und Broadcastdomänen existieren?",
+        options: [
+            { text: "18 Kollisionsdomänen und 18 Broadcastdomänen", correct: false },
+            { text: "14 Kollisionsdomänen und 2 Broadcastdomänen", correct: true },
+            { text: "2 Kollisionsdomänen und 14 Broadcastdomänen", correct: false },
+            { text: "13 Kollisionsdomänen und 1 Broadcastdomäne", correct: false }
+        ],
+        explanation: "1. Kollisionsdomänen: Jeder Switch-Port bildet eine eigene Domäne (12 PCs + 1 Uplink zum Router = 13). Der Hub bildet über ALLE seine Ports genau 1 gemeinsame Domäne (6 PCs + 1 Uplink = 1). Gesamt: 13 + 1 = 14.\n2. Broadcastdomänen: Router trennen Broadcasts. Bei 2 getrennten Router-Schnittstellen gibt es genau 2 Broadcastdomänen.",
+        rechenweg: "Kollision: Switch (12+1=13) + Hub (1) = 14. Broadcast: 2 Router-Ports = 2."
+    },
+    {
+        id: 15,
+        cat: "kunden",
+        points: 5,
+        title: "15. Kundenanforderungen: Lastenheft vs. Pflichtenheft (meineABS ab2)",
+        scenario: "Welche Aussage unterscheidet Lastenheft und Pflichtenheft normgerecht nach DIN 69901?",
+        options: [
+            { text: "Das Lastenheft beschreibt WIE und WOMIT (Auftragnehmer), das Pflichtenheft beschreibt WAS und WOFÜR (Kunde).", correct: false },
+            { text: "Das Lastenheft formuliert der Auftraggeber (Kunde) mit dem WAS und WOFÜR; das Pflichtenheft erstellt der Auftragnehmer (Dienstleister) mit dem WIE und WOMIT.", correct: true },
+            { text: "Beide Dokumente sind rechtlich identisch und werden von der IHK vorgegeben.", correct: false },
+            { text: "Das Pflichtenheft wird vor Beginn der Ausschreibung vom Kunden geschrieben.", correct: false }
+        ],
+        explanation: "Lastenheft = Sicht des Kunden / Auftraggebers: Gesamtheit aller Forderungen (WAS soll erreicht werden und WOFÜR?).\nPflichtenheft = Sicht des Dienstleisters / Auftragnehmers: Konkreter technischer Realisierungsplan (WIE und WOMIT wird es umgesetzt?).",
+        rechenweg: "Lastenheft = Auftraggeber (WAS / WOFÜR) | Pflichtenheft = Auftragnehmer (WIE / WOMIT)."
+    }
+];
+
+let currentIndex = 0;
+let userAnswers = {};
+let score = 0;
+let filteredQuestions = [...QUESTIONS];
+
+function renderQuestion() {
+    const q = filteredQuestions[currentIndex];
+    const container = document.getElementById("quiz-container");
+
+    const isAnswered = userAnswers[q.id] !== undefined;
+    const selectedIdx = userAnswers[q.id];
+
+    let optionsHtml = q.options.map((opt, i) => {
+        let cls = "option-item";
+        if (isAnswered) {
+            if (opt.correct) cls += " correct";
+            else if (i === selectedIdx) cls += " wrong";
+        } else if (i === selectedIdx) {
+            cls += " selected";
+        }
+        return `
+            <div class="${cls}" onclick="selectOption(${i})">
+                <div class="option-marker">${String.fromCharCode(65 + i)}</div>
+                <div>${opt.text}</div>
+            </div>
+        `;
+    }).join("");
+
+    let explanationHtml = "";
+    if (isAnswered) {
+        const isCorrect = q.options[selectedIdx].correct;
+        explanationHtml = `
+            <div class="explanation-box" style="display: block;">
+                <div class="explanation-title ${isCorrect ? 'success' : 'error'}">
+                    ${isCorrect ? '✅ Richtig! Volle ' + q.points + ' Punkte.' : '❌ Leider falsch! 0 von ' + q.points + ' Punkten.'}
+                </div>
+                <div class="explanation-body">${q.explanation}</div>
+                <div class="rechenweg"><strong>Süßmann-Rechenweg:</strong><br>${q.rechenweg}</div>
+            </div>
+        `;
+    }
+
+    container.innerHTML = `
+        <div class="card">
+            <div class="card-header">
+                <span class="badge">${getCategoryName(q.cat)}</span>
+                <span class="points-badge">${q.points} Punkte</span>
+            </div>
+            <div class="question-title">${q.title}</div>
+            <div class="question-scenario">${q.scenario.replace(/\n/g, '<br>')}</div>
+            <div class="options-list">${optionsHtml}</div>
+            ${explanationHtml}
+            <div class="controls">
+                <button class="btn" onclick="prevQuestion()" ${currentIndex === 0 ? 'disabled style="opacity:0.5"' : ''}>⬅ Vorherige</button>
+                <button class="btn btn-primary" onclick="nextQuestion()">
+                    ${currentIndex === filteredQuestions.length - 1 ? 'Ergebnis anzeigen 🏁' : 'Nächste Frage ➡'}
+                </button>
+            </div>
+        </div>
+    `;
+
+    updateStats();
+}
+
+function selectOption(index) {
+    const q = filteredQuestions[currentIndex];
+    if (userAnswers[q.id] !== undefined) return; // already answered
+
+    userAnswers[q.id] = index;
+    if (q.options[index].correct) {
+        score += q.points;
+    }
+    renderQuestion();
+}
+
+function nextQuestion() {
+    if (currentIndex < filteredQuestions.length - 1) {
+        currentIndex++;
+        renderQuestion();
+    } else {
+        renderSummary();
+    }
+}
+
+function prevQuestion() {
+    if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion();
+    }
+}
+
+function updateStats() {
+    const total = filteredQuestions.length;
+    document.getElementById("progress-text").innerText = `${currentIndex + 1} / ${total}`;
+    document.getElementById("score-text").innerText = `${score} P.`;
+
+    const answeredCount = Object.keys(userAnswers).length;
+    let correctCount = 0;
+    QUESTIONS.forEach(q => {
+        if (userAnswers[q.id] !== undefined && q.options[userAnswers[q.id]].correct) {
+            correctCount++;
+        }
+    });
+
+    const acc = answeredCount > 0 ? Math.round((correctCount / answeredCount) * 100) : 0;
+    document.getElementById("accuracy-text").innerText = `${acc}%`;
+
+    const maxPoints = QUESTIONS.reduce((sum, q) => sum + q.points, 0);
+    const pct = Math.round((score / maxPoints) * 100);
+    let grade = "-";
+    if (answeredCount > 0) {
+        if (pct >= 92) grade = "1 (Sehr gut)";
+        else if (pct >= 81) grade = "2 (Gut)";
+        else if (pct >= 67) grade = "3 (Befriedigend)";
+        else if (pct >= 50) grade = "4 (Ausreichend)";
+        else if (pct >= 30) grade = "5 (Mangelhaft)";
+        else grade = "6 (Ungenügend)";
+    }
+    document.getElementById("grade-text").innerText = grade;
+
+    const progressPct = ((currentIndex + 1) / total) * 100;
+    document.getElementById("progress-fill").style.width = `${progressPct}%`;
+}
+
+function renderSummary() {
+    const maxPoints = filteredQuestions.reduce((sum, q) => sum + q.points, 0);
+    const pct = Math.round((score / maxPoints) * 100);
+    let gradeText = "";
+    let gradeColor = "var(--primary)";
+
+    if (pct >= 92) { gradeText = "Note 1 – Hervorragend! Du beherrschst die Klausurthemen meisterhaft."; gradeColor = "var(--success)"; }
+    else if (pct >= 81) { gradeText = "Note 2 – Sehr solide Leistung! Kleine Rechenwege noch festigen."; gradeColor = "var(--primary)"; }
+    else if (pct >= 67) { gradeText = "Note 3 – Bestanden! Wiederhole vor allem die IPv6-Fallen und Routing."; gradeColor = "var(--warning)"; }
+    else if (pct >= 50) { gradeText = "Note 4 – Ausreichend. Nutze den Spickzettel für Inkremente und Ports."; gradeColor = "var(--warning)"; }
+    else { gradeText = "Note 5 – Nicht bestanden. Gehe das Master-Deck noch einmal intensiv durch!"; gradeColor = "var(--error)"; }
+
+    const container = document.getElementById("quiz-container");
+    container.innerHTML = `
+        <div class="card score-summary">
+            <h2 style="color: var(--text); margin-bottom: 20px;">🎉 Trainingslager abgeschlossen!</h2>
+            <div class="score-circle">
+                <div class="score-val">${score}</div>
+                <div class="score-max">von ${maxPoints} P.</div>
+            </div>
+            <h3 style="color: ${gradeColor}; margin-bottom: 12px;">${gradeText}</h3>
+            <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto 24px auto;">
+                Du hast ${pct}% der erreichbaren Punkte erzielt. Alle 15 Prüfungsaufgaben entsprechen der exakten Fragestellung von Lehrer Süßmann und den meineABS-Arbeitsblättern.
+            </p>
+            <div style="display: flex; gap: 12px; justify-content: center;">
+                <button class="btn btn-primary" onclick="restartQuiz()">🔄 Quiz wiederholen</button>
+                <button class="btn" onclick="document.getElementById('open-sheet-btn').click()">📖 Spickzettel öffnen</button>
+            </div>
+        </div>
+    `;
+}
+
+function getCategoryName(cat) {
+    switch (cat) {
+        case "ipv4": return "IPv4 & VLSM";
+        case "ipv6": return "IPv6 RFC 5952";
+        case "routing": return "Routing & Boot";
+        case "ports": return "Ports & OUI";
+        case "hardware": return "Hardware & QoS";
+        case "kunden": return "Kundenanforderungen";
+        default: return "Allgemein";
+    }
+}
+
+function restartQuiz() {
+    currentIndex = 0;
+    userAnswers = {};
+    score = 0;
+    renderQuestion();
+}
+
+// Category filter tabs
+document.getElementById("category-tabs").addEventListener("click", (e) => {
+    if (!e.target.classList.contains("tab-btn")) return;
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    e.target.classList.add("active");
+
+    const cat = e.target.getAttribute("data-cat");
+    if (cat === "all") {
+        filteredQuestions = [...QUESTIONS];
+    } else {
+        filteredQuestions = QUESTIONS.filter(q => q.cat === cat);
+    }
+    currentIndex = 0;
+    renderQuestion();
+});
+
+// Modal Logic
+const modal = document.getElementById("sheet-modal");
+document.getElementById("open-sheet-btn").onclick = () => modal.classList.add("open");
+document.getElementById("close-sheet-btn").onclick = () => modal.classList.remove("open");
+modal.onclick = (e) => { if (e.target === modal) modal.classList.remove("open"); };
+document.getElementById("reset-btn").onclick = restartQuiz;
+
+// Initial render
+renderQuestion();
+</script>
+
+</body>
+</html>
